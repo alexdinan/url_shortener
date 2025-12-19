@@ -1,0 +1,11 @@
+FROM python:3.11.14-alpine3.23
+
+WORKDIR /code
+
+COPY ./requirements.txt requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY . .
+
+CMD ["fastapi", "run", "main.py", "--port", "80"]
