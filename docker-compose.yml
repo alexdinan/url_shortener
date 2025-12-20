@@ -1,0 +1,16 @@
+
+services:
+  dynamodb:
+    image: amazon/dynamodb-local:3.1.0
+    hostname: "${DYNAMODB_HOSTNAME:-dynamodb}"
+    command: "-jar DynamoDBLocal.jar -inMemory -sharedDb"
+    ports:
+      - "${DYNAMODB_HOST_PORT:-8000}:${DYNAMODB_CONTAINER_PORT:-8000}"
+  
+  backend:
+    build: ./backend
+    env_file: .env.local
+    ports:
+      - "${BACKEND_HOST_PORT:-8080}:${BACKEND_CONTAINER_PORT:-80}"
+    depends_on:
+      - dynamodb
