@@ -19,7 +19,7 @@ terraform apply -auto-approve
 AWS_REGION="$(terraform output -raw aws_region)"
 ECR_URL="$(terraform output -raw ecr_url)"
 
-cd backend
+cd ../backend
 # authenticate docker to aws cli
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL
 # build and tag docker image
