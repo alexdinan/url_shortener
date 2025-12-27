@@ -15,9 +15,6 @@ app = FastAPI()
 # config object holds environment variables
 config = settings.config
 
-for route in app.routes:
-    print(route.path, route.methods)
-
 
 def write_item(alias: str, long_url: str) -> None:
     now_timestamp = str(int(datetime.now().timestamp()))
@@ -50,9 +47,8 @@ def fetch_item(alias: str, projection: str | None = None) -> dict[str, dict]:
         kwargs["ProjectionExpression"] = projection
     
     try:
-        item = db.client.get_item(**kwargs)
-        print(item)
-        item = item.get("Item", None)
+        item = db.client.get_item(**kwargs).get("Item", None)
+        
         if item is None:
             # no short-url with alias exists
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
